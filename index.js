@@ -17,8 +17,8 @@ io.on('connection', (socket) => {
     socket.on("start minecraft server", ()=> {
         mc_server = proc.spawn(
             "java",
-           ['-Xms512M', '-Xmx512M', '-jar', 'forge-1.12.2-14.23.5.2838-universal.jar', 'nogui'],
-           { cwd: "../rlserver2"}
+           ['-Xms1024M', '-Xmx1024M', '-jar', 'forge-1.12.2-14.23.5.2838-universal.jar'],
+           { cwd: "../../rlserver2"}
        )
        
        mc_server.stdout.on('data', function (data) {
