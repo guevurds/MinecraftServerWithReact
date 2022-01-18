@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciador Server</title>
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400&display=swap');
+        div#logServidor {
+            font-size: 15px;
+            height: 500px;
+            width: 90%;
+            background-color: #eee;
+            overflow-y: overlay;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        button#start_server_mine {
+            font-size: 20px;
+            font-family: 'Montserrat';
+            margin-bottom: 5px;
+        }
+
+        .spinner {
+            border: 8px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #000;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            animation: spin 1s linear infinite;
+            z-index: 4;
+            /* display: none; */
+        }
+
+        .pai-spinner {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .clickado {
+            color: #999;
+        }
+
+    </style>
+</head>
+<body>
+    <h1> Opa meu bom! </h1>
+    <button id="start_server_mine"> Start </button>
+    <div id="logServidor">
+        <div class="pai-spinner">
+            <div class="spinner"> </div>
+        </div>
+    </div>
+    
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io();
+  var button_start_server = document.querySelector("#start_server_mine");
+  var div_log_do_servidor = document.querySelector("#logServidor");
+  var spinner_carregamento = document.querySelector('.pai-spinner')
+  var spinnerVisivel = 0;
+  var buttonClicado = 0;
+
+  button_start_server.addEventListener('click', ()=> {
+    if(buttonClicado == 0) {
+        buttonClicado = 1
+        socket.emit('start minecraft server');
+        button_start_server.classList.add('clickado')
+        spinner_carregamento.style.display ="flex";
+        spinnerVisivel = 1;
+    }
+  })
+
+  socket.on("logServer", (log)=> {
+      const divlog = document.createElement('div');
+      divlog.innerHTML = log;
+      if(spinnerVisivel == 1) {
+          spinner_carregamento.style.display = "none";
+          spinnerVisivel = 0;
+      }
+      div_log_do_servidor.append(divlog);
+  })
+</script>
+</html>
