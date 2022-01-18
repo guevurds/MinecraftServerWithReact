@@ -90,6 +90,7 @@
   socket.on("logServer", (log)=> {
       const divlog = document.createElement('div');
       divlog.innerHTML = log;
+      divlog.scrollTop = divlog.scrollHeight
       if(spinnerVisivel == 1) {
           spinner_carregamento.style.display = "none";
           spinnerVisivel = 0;
